@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/*
 namespace ConsoleApplication1
 {
-    class Stack
+    class Stack1
     {
         private int[] stack = new int[10];
         private int sp = 0;
@@ -71,3 +71,4 @@ namespace ConsoleApplication1
         }
     }
 }
+*/
