@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace abc
 {
+
+
+
+
+
     class Stack
     {
         private int[] stack = new int[10];
