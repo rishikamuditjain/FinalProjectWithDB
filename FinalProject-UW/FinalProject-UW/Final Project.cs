@@ -15,6 +15,7 @@ namespace FinalProject
     class Program
     {
         static String myConnectionString;
+
         //private int counter = 0;
         //static ChartItems[] chartItems = new ChartItems[100];
 
