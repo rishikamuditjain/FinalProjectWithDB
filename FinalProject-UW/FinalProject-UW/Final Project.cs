@@ -210,11 +210,22 @@ namespace FinalProject
                 {
                     Console.Write("Please enter the new price/item: ");
                     int pricePerItem = Convert.ToInt32(Console.ReadLine());
-                    cmd.CommandText = "UPDATE `myDatabase`.`Enterprice_List` SET `PricePerItem`= ?pricePerItem WHERE `ItemId`= ?itemIdNo ;";
+                    int QOH = 0;
+                    string sql_users2 = "SELECT `QuantityOnHand` FROM `Enterprice_List` WHERE `ItemId`= ?itemIdNo";
+                   
+                    MySqlCommand fetchQOH = new MySqlCommand(sql_users2, connection);
+                    fetchQOH.Parameters.AddWithValue("?itemIdNo", itemIdNo);
+                    object result = fetchQOH.ExecuteScalar();
+                    if (result != null) QOH = Convert.ToInt32(result);
+
+                    int newCost = pricePerItem * QOH;
+                    cmd.CommandText = "UPDATE `myDatabase`.`Enterprice_List` SET `PricePerItem`= ?pricePerItem, `Cost`= ?Cost  WHERE `ItemId`= ?itemIdNo ;";
                     cmd.Parameters.AddWithValue("?itemIdNo", itemIdNo);
+                    cmd.Parameters.AddWithValue("?Cost", newCost);
                     cmd.Parameters.AddWithValue("?pricePerItem", pricePerItem);
                     cmd.ExecuteNonQuery();
                 }
+
                 else if (response == 4)
                 {
                     Console.Write("Please enter the new quantity: ");
