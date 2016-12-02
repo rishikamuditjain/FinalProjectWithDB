@@ -4,20 +4,9 @@ using System.Data;
 
 namespace FinalProject
 {
-    /*struct ChartItems
-    {
-        public int itemIdNo;
-        public String description;
-        public int pricePerItem;
-        public int quantityOnHand;
-    }*/
-
     class Program
     {
         static String myConnectionString;
-        //
-        //private int counter = 0;
-        //static ChartItems[] chartItems = new ChartItems[100];
 
         public static void ask()
         {
@@ -25,8 +14,7 @@ namespace FinalProject
             String description;
             int pricePerItem;
             int quantityOnHand;
-
-            //Console.Write("Please enter the choice: ");   
+  
             Console.WriteLine("Please enter your choice from the given options:");
             Console.WriteLine("Enter 1 for adding a new item");
             Console.WriteLine("Enter 2 for Changing the existing item");
@@ -112,10 +100,6 @@ namespace FinalProject
 
         public static void addItem(int itemIdNo, String description, int pricePerItem, int QOH)
         {
-            /*chartItems[counter].itemIdNo = itemIdNo;
-            chartItems[counter].description = description;
-            chartItems[counter].pricePerItem = pricePerItem;
-            chartItems[counter].quantityOnHand = QOH;*/
 
             int costPerItem = pricePerItem * QOH;
             Console.WriteLine();
@@ -145,8 +129,7 @@ namespace FinalProject
                 if (connection.State == ConnectionState.Open)
                 {
                     Console.WriteLine("Added!");
-                    connection.Close();
-                    //counter++;
+                    connection.Close(); 
                 }
             }
             Console.Write("Do you want to make any other changes in the database. Press y/Y if yes: ");
@@ -174,10 +157,6 @@ namespace FinalProject
                 connection.Open();
                 cmd = connection.CreateCommand();
                 bool moreChanges = true;
-                /*for (int i = 0; i < counter; i++)
-                {
-                    if (itemIdNo == chartItems[i].itemIdNo)
-                    {*/
                 Console.WriteLine("Please enter the number for change");
                 Console.WriteLine("Enter 1 for ItemIdNo");
                 Console.WriteLine("Enter 2 for Description");
@@ -189,7 +168,6 @@ namespace FinalProject
                 {
                     Console.Write("Please enter the new itemId: ");
                     int newItemIdNo = Convert.ToInt32(Console.ReadLine());
-                    //Console.WriteLine("Updating into database");
                     cmd.CommandText = "UPDATE `myDatabase`.`Enterprice_List` SET `ItemId`= ?newItemIdNo WHERE `ItemId`= ?itemIdNo;";
                     //UPDATE `myDatabase`.`Enterprice_List` SET `Description`='Basketball kit', `PricePerItem`='40', `QuantityOnHand`='2', `Cost`='80' WHERE `ItemId`='101';
                     cmd.Parameters.AddWithValue("?itemIdNo", itemIdNo);
@@ -200,7 +178,6 @@ namespace FinalProject
                 {
                     Console.Write("Please enter the new description: ");
                     String description = Console.ReadLine();
-                    //Console.WriteLine("DESCRIPTION: "+description);
                     cmd.CommandText = "UPDATE `myDatabase`.`Enterprice_List` SET `Description`= @description WHERE `ItemId`= @itemIdNo;";
                     cmd.Parameters.AddWithValue("@itemIdNo", itemIdNo);
                     cmd.Parameters.AddWithValue("@description", description);
@@ -230,9 +207,18 @@ namespace FinalProject
                 {
                     Console.Write("Please enter the new quantity: ");
                     int quantityOnHand = Convert.ToInt32(Console.ReadLine());
-                    Console.WriteLine("Updating into database");
-                    cmd.CommandText = "UPDATE `myDatabase`.`Enterprice_List` SET `QuantityOnHand`= ?quantityOnHand WHERE `ItemId`= ?itemIdNo;";
+                    int PPI = 0;
+                    string sql_users2 = "SELECT `PricePerItem` FROM `Enterprice_List` WHERE `ItemId`= ?itemIdNo";
+
+                    MySqlCommand fetchPPI = new MySqlCommand(sql_users2, connection);
+                    fetchPPI.Parameters.AddWithValue("?itemIdNo", itemIdNo);
+                    object result = fetchPPI.ExecuteScalar();
+                    if (result != null) PPI = Convert.ToInt32(result);
+
+                    int newCost = PPI * quantityOnHand;
+                    cmd.CommandText = "UPDATE `myDatabase`.`Enterprice_List` SET `QuantityOnHand`= ?quantityOnHand, `Cost`= ?Cost WHERE `ItemId`= ?itemIdNo;";
                     cmd.Parameters.AddWithValue("?itemIdNo", itemIdNo);
+                    cmd.Parameters.AddWithValue("?Cost", newCost);
                     cmd.Parameters.AddWithValue("?quantityOnHand", quantityOnHand);
                     cmd.ExecuteNonQuery();
                 }
@@ -248,12 +234,6 @@ namespace FinalProject
                     Console.WriteLine("Invalid option!");
                     moreChanges = false;
                 }
-                /*}
-                else
-                {
-                    Console.WriteLine("No such ItemidNo in the database!");
-                }
-            }*/
                 if (moreChanges)
                 {
                     Console.Write("Do you want to make more chanes - y/n?: ");
@@ -347,7 +327,6 @@ namespace FinalProject
                 int lineNo = 2;
                 while (rdr.Read())
                 {
-                    //Console.WriteLine(i + "     " +rdr.GetInt32(0) + "    " + rdr.GetString(1) + "    " + rdr.GetInt32(2) + "      " + rdr.GetInt32(3) + "      " + rdr.GetInt32(4));
                     sample.WriteAt(i+"", 0, lineNo);
                     sample.WriteAt(rdr.GetInt32(0) + "", 7, lineNo);
                     sample.WriteAt(rdr.GetString(1), 15, lineNo);
@@ -374,7 +353,6 @@ namespace FinalProject
                 {
                     conn.Close();
                 }
-//
             }
             Console.ReadLine();
             ask();
