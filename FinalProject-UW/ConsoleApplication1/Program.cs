@@ -13,6 +13,7 @@ namespace ConsoleApplication1
 
         public void Push(int v)
         {
+            //hii
             stack[sp++] = v;
             if (sp >= stack.Length)
             {
