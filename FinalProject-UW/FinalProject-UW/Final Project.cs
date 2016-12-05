@@ -28,7 +28,7 @@ namespace FinalProject
 
             //Console.Write("Please enter the choice: ");   
             Console.WriteLine("Please enter your choice from the given options:");
-            Console.WriteLine("Enter 1 for adding a new item");
+            Console.WriteLine("Please Enter 1 for adding a new item");
             Console.WriteLine("Enter 2 for Changing the existing item");
             Console.WriteLine("Enter 3 for Deleting an item");
             Console.WriteLine("Enter 4 for Getting list of all the items");
